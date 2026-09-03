@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title id="page-title">R&S - Ecossistema de Aplicativos & Serviços</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 950: '#090d16' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 light:bg-slate-50 light:text-slate-900 min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 relative overflow-x-hidden transition-colors duration-300">
+
+    <!-- Fundo decorativo subtil -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <!-- Barra Superior de Navegação -->
+    <header class="w-full max-w-4xl bg-slate-900/80 dark:bg-slate-900/80 light:bg-white/90 backdrop-blur-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 px-4 sm:px-6 py-3.5 rounded-2xl shadow-xl flex flex-wrap items-center justify-between gap-3 relative z-20 mb-6 transition-colors duration-300">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-600/30 shrink-0">
+                <i class="fa-solid fa-cube text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-sm sm:text-base tracking-wide bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">R&S</span>
+                <div class="flex items-center gap-1.5 text-[10px] text-slate-400">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Plataforma Oficial</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links de Navegação -->
+        <nav class="flex items-center gap-1 sm:gap-2 text-xs font-semibold">
+            <button onclick="switchView('inicio')" id="nav-inicio" class="px-3 py-2 rounded-xl bg-indigo-600 text-white transition-all cursor-pointer">
+                Início
+            </button>
+            <button onclick="switchView('criar-conta')" id="nav-criar-conta" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer">
+                Registo
+            </button>
+            <button onclick="switchView('login')" id="nav-login" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer">
+                Entrar
+            </button>
+            <button onclick="switchView('sobre')" id="nav-sobre" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer">
+                Sobre
+            </button>
+            <button id="nav-dashboard" onclick="switchView('dashboard')" class="hidden px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer">
+                Portal
+            </button>
+            <button id="nav-profile" onclick="openProfileView()" class="hidden px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-user-gear text-[10px]"></i> Perfil
+            </button>
+            <button id="nav-admin" onclick="openAdminPanel()" class="hidden px-3 py-2 rounded-xl bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition-all cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-shield-halved text-[10px]"></i> Admin
+            </button>
+        </nav>
+
+        <!-- Botão de Tema -->
+        <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-slate-800/50 light:bg-slate-200 border border-slate-700/50 light:border-slate-300 flex items-center justify-center text-indigo-400 hover:scale-105 transition-transform cursor-pointer shrink-0" title="Alternar Tema">
+            <i id="theme-icon" class="fa-solid fa-moon"></i>
+        </button>
+    </header>
+
+    <!-- Conteúdo Dinâmico (Views) -->
+    <main class="w-full max-w-xl md:max-w-3xl flex-1 flex flex-col items-center justify-center relative z-10">
+
+        <!-- ================= VIEW 1: INÍCIO ================= -->
+        <div id="view-inicio" class="w-full space-y-6">
+            <div class="bg-slate-900/80 dark:bg-slate-900/80 light:bg-white/90 backdrop-blur-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 p-6 sm:p-10 rounded-3xl shadow-2xl text-center space-y-5">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-semibold">
+                    <i class="fa-solid fa-shield-halved"></i> Moçambique • Ambiente Seguro & Verificado
+                </div>
+                <h1 class="text-xl sm:text-3xl font-extrabold tracking-tight">Ecossistema Digital R&S</h1>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-lg mx-auto">Plataforma centralizada de distribuição de aplicativos móveis, soluções de faturação e e-commerce com validação criptográfica.</p>
+                
+                <div class="pt-3 flex flex-col sm:flex-row gap-3">
+                    <button onclick="switchView('criar-conta')" class="flex-1 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium py-3.5 px-6 rounded-2xl transition-all shadow-lg shadow-indigo-600/25 active:scale-[0.98] flex items-center justify-center gap-2.5 cursor-pointer text-xs sm:text-sm">
+                        <i class="fa-solid fa-user-plus text-base"></i>
+                        <span>Criar Conta</span>
+                    </button>
+                    <button onclick="switchView('login')" class="flex-1 bg-slate-800/80 hover:bg-slate-800 text-indigo-300 font-medium py-3.5 px-6 rounded-2xl transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-2.5 cursor-pointer text-xs sm:text-sm border border-slate-700/50">
+                        <i class="fa-solid fa-right-to-bracket text-base"></i>
+                        <span>Iniciar Sessão</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 2: CRIAR CONTA ================= -->
+        <div id="view-criar-conta" class="hidden w-full bg-slate-900/80 dark:bg-slate-900/80 light:bg-white/90 backdrop-blur-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+            <div class="text-center space-y-1">
+                <h2 class="text-lg sm:text-xl font-bold">Registo de Utilizador</h2>
+                <p class="text-xs text-slate-400">Preencha os dados com validação segura para aceder ao portal.</p>
+            </div>
+
+            <form onsubmit="handleRegister(event)" class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300">Nome Completo</label>
+                    <input type="text" id="reg-name" required placeholder="Insira o seu nome" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300">Correio Eletrónico (E-mail)</label>
+                    <input type="email" id="reg-email" required placeholder="exemplo@dominio.com" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300">Telemóvel (Moçambique)</label>
+                    <input type="tel" id="reg-phone" required placeholder="841234567 ou +258841234567" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                    <span class="text-[10px] text-slate-500">Aceita números válidos de operadoras em Moçambique (Vodacom, Movitel, Tmcel).</span>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300">Palavra-passe</label>
+                    <input type="password" id="reg-pass" required minlength="6" placeholder="Mínimo de 6 carateres" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-indigo-600/25 cursor-pointer text-xs sm:text-sm">
+                    Finalizar Registo e Validar
+                </button>
+            </form>
+            <p class="text-center text-xs text-slate-400">
+                Já possui uma conta? <button onclick="switchView('login')" class="text-indigo-400 hover:underline font-semibold cursor-pointer">Iniciar Sessão</button>
+            </p>
+        </div>
+
+        <!-- ================= VIEW 3: INICIAR SESSÃO ================= -->
+        <div id="view-login" class="hidden w-full bg-slate-900/80 dark:bg-slate-900/80 light:bg-white/90 backdrop-blur-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+            <div class="text-center space-y-1">
+                <h2 class="text-lg sm:text-xl font-bold">Iniciar Sessão</h2>
+                <p class="text-xs text-slate-400">Introduza as suas credenciais para aceder ao portal.</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300">Correio Eletrónico ou Telemóvel</label>
+                    <input type="text" id="login-email" required placeholder="exemplo@dominio.com" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300">Palavra-passe</label>
+                    <input type="password" id="login-pass" required placeholder="Sua palavra-passe" class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-indigo-600/25 cursor-pointer text-xs sm:text-sm">
+                    Entrar na Conta
+                </button>
+            </form>
+            <p class="text-center text-xs text-slate-400">
+                Ainda não tem conta? <button onclick="switchView('criar-conta')" class="text-indigo-400 hover:underline font-semibold cursor-pointer">Criar Conta</button>
+            </p>
+        </div>
+
+        <!-- ================= VIEW 4: SOBRE O SITE ================= -->
+        <div id="view-sobre" class="hidden w-full bg-slate-900/80 dark:bg-slate-900/80 light:bg-white/90 backdrop-blur-xl border border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-4">
+            <h2 class="text-lg sm:text-xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-circle-info text-indigo-400"></i> Sobre o Ecossistema R&S
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                A R&S desenvolve soluções de software escaláveis em Moçambique, fornecendo infraestruturas seguras para distribuição de aplicativos, faturamento offline e comércio eletrónico.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-2xl space-y-1 text-xs">
+                    <span class="font-bold text-indigo-400 block"><i class="fa-solid fa-lock mr-1"></i> Segurança & Criptografia</span>
+                    <span class="text-slate-400">Integridade de ficheiros validada via SHA-256.</span>
+                </div>
+                <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-2xl space-y-1 text-xs">
+                    <span class="font-bold text-indigo-400 block"><i class="fa-solid fa-headset mr-1"></i> Atendimento Direto</span>
+                    <span class="text-slate-400">Suporte prioritário via canais oficiais.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 5: DASHBOARD / PORTAL ================= -->
+        <div id="view-dashboard" class="hidden w-full space-y-6">
+            
+            <!-- Saudação & Controlo de Sessão -->
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-5 sm:p-6 rounded-3xl shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 rounded-2xl flex items-center justify-center font-bold text-lg shrink-0">
+                        <span id="user-avatar-initials">US</span>
+                    </div>
+                    <div class="text-center sm:text-left">
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Sessão Verificada</span>
+                        <h2 id="user-greeting" class="text-sm sm:text-base font-bold mt-0.5">Olá, Utilizador</h2>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="openProfileView()" class="text-xs bg-slate-800 hover:bg-slate-700 text-indigo-300 px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-user-gear"></i> Meu Perfil
+                    </button>
+                    <button onclick="logout()" class="text-xs text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sair
+                    </button>
+                </div>
+            </div>
+
+            <!-- SIMULADOR DE IN-APP UPDATE -->
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-5 rounded-3xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 text-center sm:text-left">
+                    <div class="w-10 h-10 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center text-lg shrink-0 mx-auto">
+                        <i class="fa-solid fa-rotate"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">In-App Update Simulator</h4>
+                        <p class="text-xs text-slate-400 mt-0.5">Testar a notificação automática de atualização do app selecionado.</p>
+                    </div>
+                </div>
+                <button onclick="checkForUpdatesManual()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-lg shadow-indigo-600/20 text-xs flex items-center justify-center gap-2 cursor-pointer shrink-0">
+                    <i class="fa-solid fa-bell"></i> Verificar Atualização
+                </button>
+            </div>
+
+            <!-- GRELHA DE MÚLTIPLOS APLICATIVOS -->
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-5 sm:p-6 rounded-3xl shadow-2xl space-y-4">
+                <div class="border-b border-slate-800 pb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+                        <i class="fa-solid fa-grid-2"></i> Central de Aplicativos R&S
+                    </h3>
+                    
+                    <div class="w-full sm:w-56 relative">
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                        <input type="text" id="app-search-input" oninput="filterApps()" placeholder="Pesquisar aplicativo..." class="w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs font-medium">
+                    <button onclick="setCategoryFilter('Todos', this)" class="category-filter-btn px-3 py-1.5 rounded-xl bg-indigo-600 text-white transition-all cursor-pointer shrink-0">Todos</button>
+                    <button onclick="setCategoryFilter('Sistema & Segurança', this)" class="category-filter-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer shrink-0">Sistema & Segurança</button>
+                    <button onclick="setCategoryFilter('PDV & Facturação', this)" class="category-filter-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer shrink-0">PDV & Facturação</button>
+                    <button onclick="setCategoryFilter('E-commerce & Vendas', this)" class="category-filter-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer shrink-0">E-commerce</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1" id="app-grid-container"></div>
+            </div>
+
+            <!-- CENTRAL DE TRANSFERÊNCIA DE APK -->
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+                
+                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <h3 id="active-app-title" class="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+                        <i class="fa-solid fa-rocket"></i> Detalhes & Transferência APK
+                    </h3>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full border border-emerald-500/20">Estável & Verificado</span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
+                    <div id="active-app-icon" class="w-20 h-20 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shrink-0">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    
+                    <div class="flex-1 w-full">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                            <span id="app-category" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Sistema</span>
+                            <span id="app-downloads" class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                                <i class="fa-solid fa-users text-[10px]"></i> --
+                            </span>
+                        </div>
+                        <h2 id="app-name" class="text-lg sm:text-xl font-bold text-white">--</h2>
+                        <p id="app-version-meta" class="text-slate-400 text-xs mt-1">Versão -- • <span id="app-requirements">Requer --</span></p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex flex-col sm:flex-row gap-2.5">
+                        <a id="download-btn" href="#" onclick="handleDownload(event)" class="group relative flex-1 flex items-center justify-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-4 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-600/25 active:scale-[0.98] text-xs sm:text-sm">
+                            <i class="fa-solid fa-download text-base sm:text-lg group-hover:translate-y-0.5 transition-transform"></i>
+                            <span id="download-text">Descarregar Versão Oficial</span>
+                        </a>
+                        <button onclick="toggleQrModal(true)" class="bg-slate-800 hover:bg-slate-700 text-indigo-300 font-medium py-4 px-5 rounded-2xl transition-all border border-slate-700 flex items-center justify-center gap-2 text-xs cursor-pointer shrink-0">
+                            <i class="fa-solid fa-qrcode text-base"></i>
+                            <span>Partilhar QR Code</span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 px-1 gap-1">
+                        <span id="file-size"><i class="fa-solid fa-file-arrow-down mr-1"></i> Tamanho: --</span>
+                        <span id="release-date"><i class="fa-regular fa-calendar mr-1"></i> --</span>
+                    </div>
+                </div>
+
+                <div id="security-box" class="bg-slate-950/40 border border-slate-800 p-3.5 rounded-2xl text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 overflow-hidden w-full sm:w-auto">
+                        <i class="fa-solid fa-shield-cat text-emerald-400 text-base shrink-0"></i>
+                        <div class="truncate w-full">
+                            <span class="font-bold text-slate-300 block">SHA-256 Hash Verificado</span>
+                            <span id="apk-hash" class="font-mono text-[10px] text-slate-500 truncate block">--</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="copyHash()" class="flex-1 sm:flex-none text-center bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition-colors cursor-pointer text-xs">
+                            <i class="fa-regular fa-copy mr-1"></i> Copiar Hash
+                        </button>
+                        <a id="virustotal-link" href="#" target="_blank" class="text-center bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition-colors text-xs">
+                            VirusTotal <i class="fa-solid fa-external-link text-[9px] ml-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950/50 border border-slate-800 p-4 rounded-2xl">
+                    <h3 class="text-xs uppercase tracking-wider text-indigo-400 font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-sparkles"></i> Notas de Lançamento (Changelog)
+                    </h3>
+                    <p id="release-notes" class="text-slate-300 text-xs leading-relaxed">A carregar informações...</p>
+                </div>
+
+                <!-- AVALIAÇÕES E COMENTÁRIOS -->
+                <div class="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-star text-amber-400"></i> Avaliações e Opiniões
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Classificação média: <span id="app-avg-rating" class="font-bold text-white">4.8</span> / 5.0</p>
+                        </div>
+                        <div id="rating-stars-summary" class="flex text-amber-400 text-xs gap-0.5">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                    </div>
+
+                    <form onsubmit="handleReviewSubmit(event)" class="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-bold text-slate-200">Deixe a sua avaliação</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-slate-400">Sua nota:</span>
+                            <div class="flex gap-1 text-base cursor-pointer" id="interactive-stars">
+                                <i class="fa-solid fa-star text-amber-400" onclick="setRating(1)"></i>
+                                <i class="fa-solid fa-star text-amber-400" onclick="setRating(2)"></i>
+                                <i class="fa-solid fa-star text-amber-400" onclick="setRating(3)"></i>
+                                <i class="fa-solid fa-star text-amber-400" onclick="setRating(4)"></i>
+                                <i class="fa-solid fa-star text-amber-400" onclick="setRating(5)"></i>
+                            </div>
+                            <input type="hidden" id="selected-rating-value" value="5">
+                        </div>
+                        <div class="space-y-1">
+                            <textarea id="review-comment" required placeholder="Escreva o seu comentário sobre o funcionamento do app..." rows="2" class="w-full bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"></textarea>
+                        </div>
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 px-4 rounded-xl text-xs transition-colors cursor-pointer shadow-md">
+                            Publicar Opinião
+                        </button>
+                    </form>
+
+                    <div id="reviews-list-container" class="space-y-2.5 pt-1 max-h-56 overflow-y-auto no-scrollbar"></div>
+                </div>
+
+                <div class="border border-slate-800 rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion('session-history-content', 'session-history-icon')" class="w-full flex items-center justify-between p-3.5 text-xs font-medium text-slate-300 bg-slate-800/20 transition-colors cursor-pointer">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> Arquivo de Sessões Guardadas (Logins)</span>
+                        <i id="session-history-icon" class="fa-solid fa-chevron-down text-slate-500 transition-transform"></i>
+                    </button>
+                    <div id="session-history-content" class="hidden p-4 bg-slate-950/30 text-xs text-slate-400 space-y-2 border-t border-slate-800">
+                        <div id="session-history-list" class="space-y-1.5 max-h-40 overflow-y-auto no-scrollbar"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SUPORTE WHATSAPP -->
+            <div class="bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-500/30 p-5 rounded-3xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5 text-center sm:text-left">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl shrink-0 mx-auto">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Suporte Técnico Moçambique</h4>
+                        <p class="text-sm font-mono font-bold text-white tracking-wide mt-0.5">+258 87 678 8520</p>
+                    </div>
+                </div>
+                <a href="https://wa.me/258876788520?text=Olá!%20Sou%20utilizador%20registado%20na%20R&S%20e%20preciso%20de%20assistência." target="_blank" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 px-5 rounded-xl transition-all shadow-lg shadow-emerald-600/20 text-xs flex items-center justify-center gap-2 cursor-pointer shrink-0">
+                    <i class="fa-solid fa-paper-plane"></i> Contactar via WhatsApp
+                </a>
+            </div>
+
+        </div>
+
+        <!-- ================= VIEW 6: GESTÃO DE PERFIL ================= -->
+        <div id="view-profile" class="hidden w-full space-y-6">
+            <div class="bg-slate-900/90 backdrop-blur-xl border border-indigo-500/30 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+                
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-bold text-white">Meu Perfil de Utilizador</h2>
+                            <p class="text-[11px] text-slate-400">Consulte os seus dados e histórico de opiniões publicadas</p>
+                        </div>
+                    </div>
+                    <button onclick="switchView('dashboard')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl text-xs transition-colors cursor-pointer">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Portal
+                    </button>
+                </div>
+
+                <!-- Formulário de Atualização de Dados -->
+                <form onsubmit="handleProfileUpdate(event)" class="bg-slate-950/60 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-id-card"></i> Dados de Acesso & Contacto
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Nome Completo</label>
+                            <input type="text" id="profile-name" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Correio Eletrónico (E-mail)</label>
+                            <input type="email" id="profile-email" disabled class="w-full bg-slate-900/50 border border-slate-800/50 rounded-xl p-2.5 text-xs text-slate-400 cursor-not-allowed">
+                            <span class="text-[10px] text-slate-500">O e-mail principal não pode ser alterado diretamente.</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Telemóvel (Moçambique)</label>
+                            <input type="tel" id="profile-phone" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Nova Palavra-passe (Opcional)</label>
+                            <input type="password" id="profile-pass" placeholder="Deixar em branco para manter" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-5 rounded-xl text-xs transition-colors cursor-pointer shadow-md">
+                        Guardar Alterações
+                    </button>
+                </form>
+
+                <!-- Histórico de Comentários e Avaliações do Utilizador -->
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-comments"></i> Meus Comentários Publicados
+                    </h3>
+                    <div id="profile-user-reviews" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= VIEW 7: PAINEL DE ADMINISTRAÇÃO ================= -->
+        <div id="view-admin" class="hidden w-full space-y-6">
+            <div class="bg-slate-900/90 backdrop-blur-xl border border-rose-500/30 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-bold text-white">Painel de Administração</h2>
+                            <p class="text-[11px] text-slate-400">Gerir, adicionar e remover aplicativos do ecossistema R&S</p>
+                        </div>
+                    </div>
+                    <button onclick="switchView('dashboard')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl text-xs transition-colors cursor-pointer">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Portal
+                    </button>
+                </div>
+
+                <form onsubmit="handleAdminSaveApp(event)" class="bg-slate-950/60 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <h3 id="admin-form-title" class="text-xs font-bold uppercase tracking-wider text-rose-400">Adicionar Novo Aplicativo</h3>
+                    <input type="hidden" id="admin-app-edit-id" value="">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Nome do Aplicativo</label>
+                            <input type="text" id="admin-app-name" required placeholder="Ex: Gestor MZ" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Categoria</label>
+                            <select id="admin-app-category" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                                <option value="Sistema & Segurança">Sistema & Segurança</option>
+                                <option value="PDV & Facturação">PDV & Facturação</option>
+                                <option value="E-commerce & Vendas">E-commerce & Vendas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[11px] text-slate-300 font-medium">Ícone Personalizado (URL Direta ou Upload de Ficheiro)</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="admin-app-icon-url" oninput="updateAdminIconPreview(this.value)" placeholder="https://exemplo.com/icone.png ou cole em Base64" class="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                            <label class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl text-xs cursor-pointer transition-colors shrink-0 flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> Ficheiro
+                                <input type="file" id="admin-app-file-input" accept="image/*" class="hidden" onchange="handleAppIconUpload(event)">
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2.5 pt-1.5">
+                            <span class="text-[10px] text-slate-400">Pré-visualização:</span>
+                            <div id="admin-icon-preview" class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xs overflow-hidden border border-slate-700 shadow-inner">
+                                <i class="fa-solid fa-cube" id="admin-icon-preview-fallback"></i>
+                            </div>
+                            <span class="text-[10px] text-slate-500">Se nenhum ícone for fornecido, será usado o ícone padrão por categoria.</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Versão</label>
+                            <input type="text" id="admin-app-version" required placeholder="1.0.0" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Tamanho</label>
+                            <input type="text" id="admin-app-size" required placeholder="14.2 MB" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Downloads</label>
+                            <input type="text" id="admin-app-downloads" required placeholder="500+" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-300 font-medium">Requisito OS</label>
+                            <input type="text" id="admin-app-minos" required placeholder="Android 8.0+" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[11px] text-slate-300 font-medium">Link de Transferência (APK URL)</label>
+                        <input type="text" id="admin-app-url" required placeholder="https://..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[11px] text-slate-300 font-medium">Notas de Lançamento (Changelog)</label>
+                        <textarea id="admin-app-changelog" required rows="2" placeholder="Otimizações e correções..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
+                    </div>
+
+                    <div class="flex gap-2 pt-1">
+                        <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-medium py-2.5 px-5 rounded-xl text-xs transition-colors cursor-pointer shadow-md">
+                            Guardar Aplicativo
+                        </button>
+                        <button type="button" onclick="resetAdminForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 px-4 rounded-xl text-xs transition-colors cursor-pointer">
+                            Limpar / Cancelar
+                        </button>
+                    </div>
+                </form>
+
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Aplicativos Atuais no Sistema</h3>
+                    <div id="admin-app-list" class="space-y-2 max-h-64 overflow-y-auto no-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Admin Login Prompt -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-xs w-full shadow-2xl space-y-4 text-center">
+            <div class="w-12 h-12 bg-rose-500/20 text-rose-400 rounded-2xl flex items-center justify-center text-xl mx-auto">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400">Autenticação de Administrador</h3>
+            <p class="text-[11px] text-slate-400">Insira um dos códigos autorizados para aceder ao painel.</p>
+            <form onsubmit="verifyAdminPassword(event)" class="space-y-3">
+                <input type="text" id="admin-password-input" required placeholder="Código (ex: ROSARIO85)" oninput="this.value = this.value.toUpperCase()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500 text-center uppercase tracking-wider font-mono">
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAdminLoginModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs cursor-pointer">Cancelar</button>
+                    <button type="submit" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white py-2.5 rounded-xl text-xs cursor-pointer">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal do QR Code -->
+    <div id="qrcode-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-xs w-full shadow-2xl space-y-4 text-center">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-400">QR Code de Transferência</h3>
+                <button onclick="toggleQrModal(false)" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
+            </div>
+            <div class="bg-white p-3 rounded-2xl inline-block shadow-inner mx-auto">
+                <img id="qr-code-img" src="" alt="QR Code" class="w-48 h-48 mx-auto object-contain">
+            </div>
+            <p id="qr-code-app-title" class="text-xs font-bold text-white">--</p>
+            <p class="text-[11px] text-slate-400 leading-tight">Aponte a câmara do telemóvel para iniciar a transferência imediata do pacote.</p>
+            <button onclick="toggleQrModal(false)" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-xs font-medium cursor-pointer transition-colors">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal do In-App Update -->
+    <div id="update-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-center">
+            <div class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center text-xl mx-auto shadow-inner">
+                <i class="fa-solid fa-cloud-arrow-down"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-white" id="modal-app-name">Nova Versão Disponível!</h3>
+                <p class="text-xs text-slate-400 mt-1">O seu aplicativo verificou o servidor remoto e detetou um pacote de atualização.</p>
+            </div>
+            <div class="bg-slate-950/60 border border-slate-800 p-3.5 rounded-2xl text-left text-xs space-y-1.5">
+                <p class="font-bold text-indigo-400 flex items-center justify-between">
+                    <span id="modal-version-text">Versão --</span>
+                    <span id="modal-size-text" class="text-[10px] bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded-full">--</span>
+                </p>
+                <p class="text-slate-300 text-[11px] leading-relaxed" id="modal-changelog-text">--</p>
+            </div>
+            <div class="flex gap-2.5 pt-1">
+                <button onclick="closeUpdateModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl text-xs font-medium cursor-pointer transition-colors">
+                    Ignorar
+                </button>
+                <a id="modal-download-btn" href="#" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-medium cursor-pointer transition-colors flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-600/25">
+                    Atualizar Agora
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="w-full max-w-4xl text-center py-6 mt-6 border-t border-slate-900 text-xs text-slate-500">
+        <p>&copy; 2026 R&S. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Toast de Notificação -->
+    <div id="custom-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 pointer-events-none transition-all duration-300 z-50 max-w-sm w-[90%] bg-slate-900 border border-slate-700 p-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <div id="toast-icon" class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-circle-check text-sm"></i>
+        </div>
+        <div class="flex-1">
+            <h5 id="toast-title" class="text-xs font-bold text-white">Sucesso</h5>
+            <p id="toast-message" class="text-[11px] text-slate-300 leading-tight">Operação efetuada com sucesso.</p>
+        </div>
+    </div>
+
+    <!-- Script Profissional -->
+    <script>
+        const defaultAppsRegistry = [
+            {
+                id: 'rs-suite',
+                name: 'R&S Mobile Suite',
+                category: 'Sistema & Segurança',
+                downloads: '2.8k+',
+                version: '1.2.0',
+                minAndroid: 'Android 7.0+',
+                size: '15.4 MB',
+                releaseDate: 'Setembro 2026',
+                changelog: 'Otimizações gerais de desempenho, melhorias na estabilidade de rede e verificação estendida de integridade SHA-256.',
+                sha256Hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                virusTotalUrl: 'https://www.virustotal.com',
+                apkUrl: 'https://drive.google.com/uc?export=download&id=1GHA4gxOXmpJal7HczyyPWl0iBO9332M9',
+                iconBg: 'bg-indigo-600',
+                iconClass: 'fa-cube',
+                iconImage: ''
+            },
+            {
+                id: 'faturaja',
+                name: 'FaturaJá MZ',
+                category: 'PDV & Facturação',
+                downloads: '1.5k+',
+                version: '2.0.1',
+                minAndroid: 'Android 8.0+',
+                size: '12.1 MB',
+                releaseDate: 'Agosto 2026',
+                changelog: 'Gestão offline de stock, registo rápido de vendas, controlo de caixa e emissão de recibos digitais otimizados.',
+                sha256Hash: '8f42d99b189781223aa9e712398ab1264c918237918237a91823719283719283',
+                virusTotalUrl: 'https://www.virustotal.com',
+                apkUrl: 'https://drive.google.com/uc?export=download&id=faturaja_placeholder',
+                iconBg: 'bg-emerald-600',
+                iconClass: 'fa-receipt',
+                iconImage: ''
+            },
+            {
+                id: 'on-shopping',
+                name: 'On Shopping MZ',
+                category: 'E-commerce & Vendas',
+                downloads: '4.2k+',
+                version: '1.1.4',
+                minAndroid: 'Android 6.0+',
+                size: '18.9 MB',
+                releaseDate: 'Agosto 2026',
+                changelog: 'Catálogo digital interativo com carrinho flutuante e integração automatizada de encomendas via WhatsApp para o mercado local.',
+                sha256Hash: '3a7b9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
+                virusTotalUrl: 'https://www.virustotal.com',
+                apkUrl: 'https://drive.google.com/uc?export=download&id=onshopping_placeholder',
+                iconBg: 'bg-violet-600',
+                iconClass: 'fa-bag-shopping',
+                iconImage: ''
+            }
+        ];
+
+        let appsRegistry = JSON.parse(localStorage.getItem('rs_custom_apps')) || defaultAppsRegistry;
+        let currentActiveApp = appsRegistry[0] || defaultAppsRegistry[0];
+        let currentCategory = 'Todos';
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem('rs_theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                document.getElementById('theme-icon').className = "fa-solid fa-sun";
+            }
+
+            const savedUser = localStorage.getItem('rs_user');
+            if (savedUser) {
+                setupUserSession(savedUser);
+                switchView('dashboard');
+            }
+            
+            renderAppGrid();
+            loadAppDetails(currentActiveApp);
+            renderSessionHistory();
+        });
+
+        function switchView(viewId) {
+            ['inicio', 'criar-conta', 'login', 'sobre', 'dashboard', 'profile', 'admin'].forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if(el) el.classList.add('hidden');
+                
+                const nav = document.getElementById(`nav-${v}`);
+                if(nav && v !== 'admin' && v !== 'profile') {
+                    nav.classList.remove('bg-indigo-600', 'text-white');
+                    nav.classList.add('text-slate-400');
+                }
+            });
+
+            const targetView = document.getElementById(`view-${viewId}`);
+            if(targetView) targetView.classList.remove('hidden');
+
+            const activeNav = document.getElementById(`nav-${viewId}`);
+            if(activeNav && viewId !== 'admin' && viewId !== 'profile') {
+                activeNav.classList.remove('text-slate-400');
+                activeNav.classList.add('bg-indigo-600', 'text-white');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showToast(title, message) {
+            const toast = document.getElementById('custom-toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-message').innerText = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3500);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.className = "fa-solid fa-sun";
+                localStorage.setItem('rs_theme', 'light');
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.className = "fa-solid fa-moon";
+                localStorage.setItem('rs_theme', 'dark');
+            }
+        }
+
+        function setupUserSession(name) {
+            document.getElementById('user-greeting').innerText = `Olá, ${name}`;
+            document.getElementById('user-avatar-initials').innerText = name.substring(0, 2).toUpperCase();
+            
+            document.getElementById('nav-inicio').classList.add('hidden');
+            document.getElementById('nav-criar-conta').classList.add('hidden');
+            document.getElementById('nav-login').classList.add('hidden');
+
+            document.getElementById('nav-dashboard').classList.remove('hidden');
+            document.getElementById('nav-profile').classList.remove('hidden');
+            document.getElementById('nav-sobre').classList.remove('hidden');
+            document.getElementById('nav-admin').classList.remove('hidden');
+
+            renderSessionHistory();
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showToast("Erro de Validação", "O e-mail introduzido não é válido.");
+                return;
+            }
+
+            const phoneClean = phone.replace(/\s+/g, '');
+            const mzPhoneRegex = /^(?:\+258)?(8[234567]\d{7})$/;
+            if (!mzPhoneRegex.test(phoneClean)) {
+                showToast("Erro de Validação", "Número inválido. Use um formato moçambicano (ex: 841234567).");
+                return;
+            }
+
+            let accounts = JSON.parse(localStorage.getItem('rs_accounts') || '[]');
+            if(!accounts.some(acc => acc.email === email)) {
+                accounts.push({ name, email, phone: phoneClean, pass });
+                localStorage.setItem('rs_accounts', JSON.stringify(accounts));
+            }
+
+            localStorage.setItem('rs_user', name);
+            archiveSession(name, email);
+            setupUserSession(name);
+            showToast("Registo Bem-Sucedido!", "Dados validados com sucesso.");
+            switchView('dashboard');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            let accounts = JSON.parse(localStorage.getItem('rs_accounts') || '[]');
+            const user = accounts.find(acc => (acc.email === identifier || acc.phone === identifier) && acc.pass === pass);
+
+            if (user || accounts.length === 0) {
+                const userName = user ? user.name : identifier.split('@')[0];
+                localStorage.setItem('rs_user', userName);
+                archiveSession(userName, user ? user.email : identifier);
+                setupUserSession(userName);
+                showToast("Sessão Iniciada", `Bem-vindo de volta, ${userName}!`);
+                switchView('dashboard');
+            } else {
+                showToast("Erro de Autenticação", "Credenciais incorretas.");
+            }
+        }
+
+        // GESTÃO DE PERFIL
+        function openProfileView() {
+            const currentUserName = localStorage.getItem('rs_user');
+            let accounts = JSON.parse(localStorage.getItem('rs_accounts') || '[]');
+            let userAccount = accounts.find(acc => acc.name === currentUserName) || {
+                name: currentUserName || 'Utilizador',
+                email: 'utilizador@rs.mz',
+                phone: '+258 840000000',
+                pass: ''
+            };
+
+            document.getElementById('profile-name').value = userAccount.name;
+            document.getElementById('profile-email').value = userAccount.email;
+            document.getElementById('profile-phone').value = userAccount.phone;
+            document.getElementById('profile-pass').value = '';
+
+            renderUserReviewsList(userAccount.name);
+            switchView('profile');
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            const oldName = localStorage.getItem('rs_user');
+            const newName = document.getElementById('profile-name').value.trim();
+            const newPhone = document.getElementById('profile-phone').value.trim();
+            const newPass = document.getElementById('profile-pass').value;
+
+            let accounts = JSON.parse(localStorage.getItem('rs_accounts') || '[]');
+            let index = accounts.findIndex(acc => acc.name === oldName || acc.email === document.getElementById('profile-email').value);
+
+            if (index !== -1) {
+                accounts[index].name = newName;
+                accounts[index].phone = newPhone;
+                if (newPass && newPass.length >= 6) {
+                    accounts[index].pass = newPass;
+                }
+            } else {
+                accounts.push({
+                    name: newName,
+                    email: document.getElementById('profile-email').value,
+                    phone: newPhone,
+                    pass: newPass || '123456'
+                });
+            }
+
+            localStorage.setItem('rs_accounts', JSON.stringify(accounts));
+            
+            if (oldName !== newName) {
+                let allReviews = JSON.parse(localStorage.getItem('rs_app_reviews') || '{}');
+                for (let appId in allReviews) {
+                    allReviews[appId].forEach(r => {
+                        if (r.author === oldName) r.author = newName;
+                    });
+                }
+                localStorage.setItem('rs_app_reviews', JSON.stringify(allReviews));
+            }
+
+            localStorage.setItem('rs_user', newName);
+            setupUserSession(newName);
+            showToast("Perfil Atualizado", "As suas alterações foram guardadas com sucesso.");
+            switchView('dashboard');
+        }
+
+        function renderUserReviewsList(userName) {
+            const container = document.getElementById('profile-user-reviews');
+            if (!container) return;
+
+            let allReviews = JSON.parse(localStorage.getItem('rs_app_reviews') || '{}');
+            let userReviews = [];
+
+            for (let appId in allReviews) {
+                const appObj = appsRegistry.find(a => a.id === appId);
+                const appName = appObj ? appObj.name : appId;
+                allReviews[appId].forEach(r => {
+                    if (r.author === userName) {
+                        userReviews.push({ ...r, appName });
+                    }
+                });
+            }
+
+            if (userReviews.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-3">Ainda não publicou nenhuma avaliação.</p>';
+                return;
+            }
+
+            container.innerHTML = userReviews.map(r => `
+                <div class="bg-slate-950/60 border border-slate-800 p-3.5 rounded-xl text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-indigo-400">${r.appName}</span>
+                        <div class="flex items-center gap-1 text-amber-400 text-[10px]">
+                            ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
+                            <span class="text-slate-500 ml-1">${r.date}</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-[11px]">${r.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        function archiveSession(userName, email) {
+            let history = JSON.parse(localStorage.getItem('rs_session_history') || '[]');
+            const newSession = {
+                name: userName,
+                email: email || 'utilizador@rs.mz',
+                timestamp: new Date().toLocaleString('pt-PT')
+            };
+            history.unshift(newSession);
+            if (history.length > 25) history = history.slice(0, 25);
+            localStorage.setItem('rs_session_history', JSON.stringify(history));
+        }
+
+        function renderSessionHistory() {
+            const container = document.getElementById('session-history-list');
+            if (!container) return;
+            const history = JSON.parse(localStorage.getItem('rs_session_history') || '[]');
+            if (history.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-center py-2">Nenhum registo de sessão.</p>';
+                return;
+            }
+            container.innerHTML = history.map(s => `
+                <div class="flex justify-between items-center py-2 border-b border-slate-800/60 text-[11px]">
+                    <div>
+                        <span class="font-bold text-slate-200 block">${s.name}</span>
+                        <span class="text-slate-500 text-[10px]">${s.email}</span>
+                    </div>
+                    <span class="text-indigo-400 font-mono text-[10px] bg-indigo-500/10 px-2 py-1 rounded-lg">${s.timestamp}</span>
+                </div>
+            `).join('');
+        }
+
+        function logout() {
+            localStorage.removeItem('rs_user');
+            document.getElementById('nav-inicio').classList.remove('hidden');
+            document.getElementById('nav-criar-conta').classList.remove('hidden');
+            document.getElementById('nav-login').classList.remove('hidden');
+            document.getElementById('nav-dashboard').classList.add('hidden');
+            document.getElementById('nav-profile').classList.add('hidden');
+            document.getElementById('nav-admin').classList.add('hidden');
+            showToast("Sessão Terminada", "Até breve.");
+            switchView('inicio');
+        }
+
+        function setCategoryFilter(category, btnElement) {
+            currentCategory = category;
+            document.querySelectorAll('.category-filter-btn').forEach(btn => {
+                btn.className = "category-filter-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer shrink-0";
+            });
+            btnElement.className = "category-filter-btn px-3 py-1.5 rounded-xl bg-indigo-600 text-white transition-all cursor-pointer shrink-0";
+            renderAppGrid();
+        }
+
+        function filterApps() {
+            renderAppGrid();
+        }
+
+        function renderAppGrid() {
+            const gridContainer = document.getElementById('app-grid-container');
+            const searchQuery = document.getElementById('app-search-input').value.toLowerCase();
+            if (!gridContainer) return;
+
+            const filtered = appsRegistry.filter(app => {
+                const matchesCategory = currentCategory === 'Todos' || app.category.toLowerCase().includes(currentCategory.toLowerCase().split(' ')[0]);
+                const matchesSearch = app.name.toLowerCase().includes(searchQuery) || app.category.toLowerCase().includes(searchQuery);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                gridContainer.innerHTML = '<p class="col-span-full text-center text-slate-500 text-xs py-4">Nenhum aplicativo encontrado.</p>';
+                return;
+            }
+
+            gridContainer.innerHTML = filtered.map(app => {
+                const isSelected = currentActiveApp && currentActiveApp.id === app.id;
+                const iconHtml = app.iconImage 
+                    ? `<img src="${app.iconImage}" class="w-full h-full object-cover">`
+                    : `<i class="fa-solid ${app.iconClass || 'fa-cube'} text-white text-base"></i>`;
+                const iconContainerStyle = app.iconImage 
+                    ? `w-10 h-10 rounded-xl overflow-hidden shadow-md shrink-0 border border-slate-700` 
+                    : `w-10 h-10 ${app.iconBg || 'bg-indigo-600'} rounded-xl flex items-center justify-center shadow-md shrink-0`;
+
+                return `
+                    <div onclick="selectAppById('${app.id}')" class="group cursor-pointer bg-slate-950/40 border ${isSelected ? 'border-indigo-500 bg-indigo-500/10' : 'border-slate-800 hover:border-slate-700'} p-4 rounded-2xl transition-all flex flex-col justify-between space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="${iconContainerStyle}">
+                                ${iconHtml}
+                            </div>
+                            <div class="overflow-hidden">
+                                <h4 class="text-xs font-bold text-white truncate">${app.name}</h4>
+                                <span class="text-[10px] text-indigo-400 block">${app.category}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-2 border-t border-slate-800/60">
+                            <span>Ver. ${app.version}</span>
+                            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-download mr-1"></i> ${app.downloads}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectAppById(id) {
+            const found = appsRegistry.find(a => a.id === id);
+            if (found) {
+                currentActiveApp = found;
+                renderAppGrid();
+                loadAppDetails(found);
+            }
+        }
+
+        function loadAppDetails(app) {
+            if (!app) return;
+            document.getElementById('page-title').innerText = `R&S - ${app.name}`;
+            document.getElementById('app-name').innerText = app.name;
+            document.getElementById('app-category').innerText = app.category;
+            document.getElementById('app-downloads').innerHTML = `<i class="fa-solid fa-users text-[10px]"></i> ${app.downloads}`;
+            document.getElementById('app-version-meta').innerHTML = `Versão ${app.version} • <span>Requer ${app.minAndroid}</span>`;
+            document.getElementById('release-notes').innerText = app.changelog;
+            document.getElementById('file-size').innerHTML = `<i class="fa-solid fa-file-arrow-down mr-1"></i> Tamanho: ${app.size}`;
+            document.getElementById('release-date').innerHTML = `<i class="fa-regular fa-calendar mr-1"></i> ${app.releaseDate}`;
+            
+            const detailIconEl = document.getElementById('active-app-icon');
+            if (app.iconImage) {
+                detailIconEl.className = `w-20 h-20 rounded-2xl overflow-hidden shadow-lg shrink-0 border border-slate-700`;
+                detailIconEl.innerHTML = `<img src="${app.iconImage}" class="w-full h-full object-cover">`;
+            } else {
+                detailIconEl.className = `w-20 h-20 ${app.iconBg || 'bg-indigo-600'} rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shrink-0`;
+                detailIconEl.innerHTML = `<i class="fa-solid ${app.iconClass || 'fa-cube'}"></i>`;
+            }
+
+            document.getElementById('apk-hash').innerText = app.sha256Hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+            document.getElementById('virustotal-link').href = app.virusTotalUrl || 'https://www.virustotal.com';
+
+            renderReviewsForApp(app.id);
+        }
+
+        function openAdminPanel() {
+            const modal = document.getElementById('admin-login-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAdminLoginModal() {
+            const modal = document.getElementById('admin-login-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.getElementById('admin-password-input').value = '';
+        }
+
+        function verifyAdminPassword(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-password-input').value.trim();
+            
+            if (pass === 'ROSARIO85' || pass === 'SALAZAR85') {
+                closeAdminLoginModal();
+                switchView('admin');
+                renderAdminAppList();
+                showToast("Painel Admin", "Acesso autorizado com sucesso.");
+            } else {
+                showToast("Erro", "Código de administrador incorreto.");
+            }
+        }
+
+        function handleAppIconUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                document.getElementById('admin-app-icon-url').value = base64Data;
+                updateAdminIconPreview(base64Data);
+                showToast("Ícone Carregado", "Imagem convertida com sucesso.");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateAdminIconPreview(url) {
+            const preview = document.getElementById('admin-icon-preview');
+            if (url && url.trim() !== '') {
+                preview.className = "w-9 h-9 rounded-xl overflow-hidden border border-slate-700 shadow-inner shrink-0";
+                preview.innerHTML = `<img src="${url}" class="w-full h-full object-cover">`;
+            } else {
+                preview.className = "w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xs border border-slate-700 shadow-inner shrink-0";
+                preview.innerHTML = `<i class="fa-solid fa-cube"></i>`;
+            }
+        }
+
+        function renderAdminAppList() {
+            const listContainer = document.getElementById('admin-app-list');
+            if (!listContainer) return;
+
+            if (appsRegistry.length === 0) {
+                listContainer.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">Nenhum aplicativo registado.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = appsRegistry.map(app => {
+                const iconHtml = app.iconImage 
+                    ? `<img src="${app.iconImage}" class="w-full h-full object-cover">` 
+                    : `<i class="fa-solid ${app.iconClass || 'fa-cube'} text-white"></i>`;
+                const iconBoxClass = app.iconImage 
+                    ? `w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-slate-700` 
+                    : `w-8 h-8 ${app.iconBg || 'bg-indigo-600'} rounded-lg flex items-center justify-center text-white text-xs shrink-0`;
+
+                return `
+                    <div class="bg-slate-950/60 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2.5 truncate">
+                            <div class="${iconBoxClass}">
+                                ${iconHtml}
+                            </div>
+                            <div class="truncate">
+                                <span class="font-bold text-white block truncate">${app.name}</span>
+                                <span class="text-[10px] text-slate-400">Ver. ${app.version} • ${app.category}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="editAdminApp('${app.id}')" class="bg-slate-800 hover:bg-slate-700 text-indigo-300 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer" title="Editar">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="deleteAdminApp('${app.id}')" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer" title="Eliminar">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function handleAdminSaveApp(e) {
+            e.preventDefault();
+            const editId = document.getElementById('admin-app-edit-id').value;
+            const name = document.getElementById('admin-app-name').value.trim();
+            const category = document.getElementById('admin-app-category').value;
+            const iconImage = document.getElementById('admin-app-icon-url').value.trim();
+            const version = document.getElementById('admin-app-version').value.trim();
+            const size = document.getElementById('admin-app-size').value.trim();
+            const downloads = document.getElementById('admin-app-downloads').value.trim();
+            const minAndroid = document.getElementById('admin-app-minos').value.trim();
+            const apkUrl = document.getElementById('admin-app-url').value.trim();
+            const changelog = document.getElementById('admin-app-changelog').value.trim();
+
+            if (editId) {
+                const index = appsRegistry.findIndex(a => a.id === editId);
+                if (index !== -1) {
+                    appsRegistry[index] = {
+                        ...appsRegistry[index],
+                        name, category, iconImage, version, size, downloads, minAndroid, apkUrl, changelog
+                    };
+                }
+                showToast("Sucesso", "Aplicativo atualizado com sucesso!");
+            } else {
+                const newId = name.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Date.now();
+                const newApp = {
+                    id: newId,
+                    name,
+                    category,
+                    downloads,
+                    version,
+                    minAndroid,
+                    size,
+                    releaseDate: 'Setembro 2026',
+                    changelog,
+                    sha256Hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                    virusTotalUrl: 'https://www.virustotal.com',
+                    apkUrl,
+                    iconBg: 'bg-indigo-600',
+                    iconClass: 'fa-cube',
+                    iconImage
+                };
+                appsRegistry.push(newApp);
+                currentActiveApp = newApp;
+                showToast("Sucesso", "Novo aplicativo adicionado!");
+            }
+
+            localStorage.setItem('rs_custom_apps', JSON.stringify(appsRegistry));
+            resetAdminForm();
+            renderAdminAppList();
+            renderAppGrid();
+            loadAppDetails(currentActiveApp);
+            switchView('dashboard');
+        }
+
+        function editAdminApp(id) {
+            const app = appsRegistry.find(a => a.id === id);
+            if (!app) return;
+
+            document.getElementById('admin-app-edit-id').value = app.id;
+            document.getElementById('admin-app-name').value = app.name;
+            document.getElementById('admin-app-category').value = app.category;
+            document.getElementById('admin-app-icon-url').value = app.iconImage || '';
+            updateAdminIconPreview(app.iconImage || '');
+            document.getElementById('admin-app-version').value = app.version;
+            document.getElementById('admin-app-size').value = app.size;
+            document.getElementById('admin-app-downloads').value = app.downloads;
+            document.getElementById('admin-app-minos').value = app.minAndroid;
+            document.getElementById('admin-app-url').value = app.apkUrl;
+            document.getElementById('admin-app-changelog').value = app.changelog;
+
+            document.getElementById('admin-form-title').innerText = `Editar Aplicativo: ${app.name}`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteAdminApp(id) {
+            if (appsRegistry.length <= 1) {
+                showToast("Aviso", "O ecossistema precisa de pelo menos um aplicativo.");
+                return;
+            }
+            if (confirm("Tem certeza que deseja eliminar este aplicativo do sistema?")) {
+                appsRegistry = appsRegistry.filter(a => a.id !== id);
+                localStorage.setItem('rs_custom_apps', JSON.stringify(appsRegistry));
+                if (currentActiveApp.id === id) {
+                    currentActiveApp = appsRegistry[0];
+                }
+                renderAdminAppList();
+                renderAppGrid();
+                loadAppDetails(currentActiveApp);
+                showToast("Eliminado", "Aplicativo removido com sucesso.");
+            }
+        }
+
+        function resetAdminForm() {
+            document.getElementById('admin-app-edit-id').value = '';
+            document.getElementById('admin-app-name').value = '';
+            document.getElementById('admin-app-icon-url').value = '';
+            document.getElementById('admin-app-file-input').value = '';
+            updateAdminIconPreview('');
+            document.getElementById('admin-app-version').value = '';
+            document.getElementById('admin-app-size').value = '';
+            document.getElementById('admin-app-downloads').value = '';
+            document.getElementById('admin-app-minos').value = '';
+            document.getElementById('admin-app-url').value = '';
+            document.getElementById('admin-app-changelog').value = '';
+            document.getElementById('admin-form-title').innerText = 'Adicionar Novo Aplicativo';
+        }
+
+        function toggleQrModal(show) {
+            const modal = document.getElementById('qrcode-modal');
+            if (show) {
+                const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentActiveApp.apkUrl)}`;
+                document.getElementById('qr-code-img').src = qrImgUrl;
+                document.getElementById('qr-code-app-title').innerText = currentActiveApp.name;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
+        function setRating(score) {
+            document.getElementById('selected-rating-value').value = score;
+            const stars = document.getElementById('interactive-stars').children;
+            for(let i = 0; i < stars.length; i++) {
+                if(i < score) {
+                    stars[i].className = "fa-solid fa-star text-amber-400";
+                } else {
+                    stars[i].className = "fa-regular fa-star text-slate-600";
+                }
+            }
+        }
+
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            const currentUser = localStorage.getItem('rs_user') || 'Utilizador Anónimo';
+            const score = parseInt(document.getElementById('selected-rating-value').value);
+            const comment = document.getElementById('review-comment').value.trim();
+
+            let allReviews = JSON.parse(localStorage.getItem('rs_app_reviews') || '{}');
+            if(!allReviews[currentActiveApp.id]) {
+                allReviews[currentActiveApp.id] = [];
+            }
+
+            allReviews[currentActiveApp.id].unshift({
+                author: currentUser,
+                rating: score,
+                comment: comment,
+                date: new Date().toLocaleDateString('pt-PT')
+            });
+
+            localStorage.setItem('rs_app_reviews', JSON.stringify(allReviews));
+            document.getElementById('review-comment').value = '';
+            showToast("Avaliação Publicada", "Obrigado pelo seu feedback!");
+            renderReviewsForApp(currentActiveApp.id);
+        }
+
+        function renderReviewsForApp(appId) {
+            const container = document.getElementById('reviews-list-container');
+            if (!container) return;
+            let allReviews = JSON.parse(localStorage.getItem('rs_app_reviews') || '{}');
+            const reviews = allReviews[appId] || [
+                { author: "Eusébio M.", rating: 5, comment: "Excelente aplicativo, muito fluido e seguro.", date: "02/09/2026" },
+                { author: "Celso B.", rating: 4, comment: "Muito bom para o dia a dia, recomendo.", date: "01/09/2026" }
+            ];
+
+            let totalScore = reviews.reduce((acc, r) => acc + r.rating, 0);
+            let avg = (totalScore / reviews.length).toFixed(1);
+            document.getElementById('app-avg-rating').innerText = avg;
+
+            container.innerHTML = reviews.map(r => `
+                <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-200">${r.author}</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-amber-400 text-[10px]">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                            <span class="text-[10px] text-slate-500">${r.date}</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-[11px] leading-relaxed">${r.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        function checkForUpdatesManual() {
+            showToast("A verificar...", `A consultar servidores para ${currentActiveApp.name}...` );
+            setTimeout(() => {
+                document.getElementById('modal-app-name').innerText = `Atualização para ${currentActiveApp.name}`;
+                document.getElementById('modal-version-text').innerText = `Versão ${currentActiveApp.version}`;
+                document.getElementById('modal-size-text').innerText = currentActiveApp.size;
+                document.getElementById('modal-changelog-text').innerText = currentActiveApp.changelog;
+                document.getElementById('modal-download-btn').href = currentActiveApp.apkUrl;
+
+                const modal = document.getElementById('update-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }, 800);
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('update-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function handleDownload(e) {
+            if (currentActiveApp.apkUrl.includes("placeholder")) {
+                e.preventDefault();
+                showToast("Em Breve", `${currentActiveApp.name} estará disponível para descarregar em breve.`);
+                return;
+            }
+            const btnText = document.getElementById('download-text');
+            btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> A preparar transferência...';
+            setTimeout(() => { btnText.innerHTML = 'Descarregar Versão Oficial'; }, 3000);
+            window.location.href = currentActiveApp.apkUrl;
+        }
+
+        function copyHash() {
+            const hashText = document.getElementById('apk-hash').innerText;
+            navigator.clipboard.writeText(hashText).then(() => {
+                showToast("Copiado", "Hash SHA-256 copiado.");
+            });
+        }
+
+        function toggleAccordion(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>
